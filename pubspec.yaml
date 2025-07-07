@@ -11,6 +11,16 @@ dependencies:
   flutter:
     sdk: flutter
 
+  bloc:
+  flutter_bloc:
+  cupertino_icons: ^1.0.8
+  skeletonizer: ^2.0.1
+  top_snackbar_flutter: ^3.3.0
+  flutter_svg: ^2.0.10+1
+  flutter_localization: ^0.2.0
+  flutter_screenutil: ^5.9.0
+  intl: ^0.20.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -21,6 +31,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
+  generate: true
+  assets:
+    - assets/images/
+    - assets/svg/
+
+  uses-material-design: true
 
   # To add assets to your package, add an assets section, like this:
   # assets:

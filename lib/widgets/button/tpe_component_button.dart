@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 enum TPEButtonVariant { primary, outline, link, plain }
 enum TPEButtonSize { small, medium }
 enum TPEButtonRound { none, rounded, pill }
+enum TPEButtonRounde { none, rounded, pill }
 
 class TPERefineButton extends StatelessWidget {
   final String? title;

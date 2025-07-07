@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:tpe_component_sdk/tpe_component_sdk.dart';
 
 void main() {
   test('adds one to input values', () {

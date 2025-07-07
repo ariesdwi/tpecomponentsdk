@@ -1,4 +1,4 @@
 // lib/tpe_component_sdk.dart
-library tpe_component_sdk;
+library;
 
-export 'widgets/tpe_component_button.dart';
+// export 'widgets/tpe_component_button.dart';
