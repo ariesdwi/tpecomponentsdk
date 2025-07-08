@@ -4,7 +4,6 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:tpe_component_sdk/utils/color_utils.dart';
 import 'package:tpe_component_sdk/utils/number_formater.dart';
 import 'package:tpe_component_sdk/utils/spacers.dart';
-import 'package:tpe_component_sdk/utils/text_utils.dart';
 import 'package:tpe_component_sdk/utils/top_modal.dart';
 
 class TpeTwCardSection extends StatefulWidget {
@@ -27,10 +26,10 @@ class TpeTwCardSection extends StatefulWidget {
     required this.balance,
     required this.currency,
     required this.backgroundCardSeeAll,
-    this.titleBalanceText,
-    this.copyText,
-    this.successCopyMessage,
-    this.errorCopyMessage,
+    this.titleBalanceText = "",
+    this.copyText = "",
+    this.successCopyMessage = "",
+    this.errorCopyMessage = "",
     this.showCopy = false,
     this.showError = false,
     this.errorMessage,
@@ -69,9 +68,13 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              textBody14SemiBold(
+              Text(
                 formatAccountNumber(widget.accountNumber),
-                color: TPEColors.blue80,
+                style: TextStyle(
+                  fontSize: 14, // tanpa .spMin
+                  fontWeight: FontWeight.w600,
+                  color: TPEColors.blue80,
+                ),
               ),
               if (widget.showCopy)
                 GestureDetector(
@@ -82,14 +85,22 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
                       showTopSnackBar(
                         Overlay.of(context),
                         TopModal.success(
-                            message: widget.successCopyMessage ?? ""),
+                          message: widget.successCopyMessage ?? "",
+                        ),
                         displayDuration: Duration(seconds: 3),
                       );
                     });
                   },
                   child: Row(
                     children: [
-                      textBody14Bold(widget.copyText, color: TPEColors.blue80),
+                      Text(
+                        widget.copyText ?? "",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: TPEColors.blue80,
+                        ),
+                      ),
                       8.width,
                       Icon(Icons.copy, color: TPEColors.blue80, size: 16),
                     ],
@@ -98,9 +109,13 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
             ],
           ),
           Divider(color: TPEColors.ligth20, thickness: 1),
-          textBody12Bold(
-            widget.titleBalanceText,
-            color: TPEColors.ligth80,
+          Text(
+            widget.titleBalanceText ?? "",
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: TPEColors.ligth80,
+            ),
           ),
           widget.showError
               ? Text(
@@ -115,7 +130,14 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
                 )
               : Row(
                   children: [
-                    textHeader20Bold(widget.currency, color: TPEColors.blue80),
+                    Text(
+                      widget.currency,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: TPEColors.blue80,
+                      ),
+                    ),
                     8.width,
                     if (visible)
                       Row(
@@ -176,8 +198,10 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
               // onTap: onTap,
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: widget.backgroundCardSeeAll.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(12),
@@ -198,7 +222,7 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
