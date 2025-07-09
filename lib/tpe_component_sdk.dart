@@ -8,5 +8,7 @@ export 'widgets/menu/tpe_component_menu.dart';
 export 'widgets/menu/tpe_component_menu_horizontal.dart';
 export 'widgets/card/balance_tl_type/tpe_balance_card_tl_type.dart';
 export 'widgets/card/balance_tw_type/tpe_balance_card_tw_type.dart';
-export 'widgets/card/model/tpe_balance_card_data.dart';
+export 'widgets/card/model/tpe_balance_card_tw_style.dart';
+export 'widgets/card/model/tpe_balance_card_tl_style.dart';
+export 'widgets/section/tpe_component_section_header.dart';
 export 'utils/color_utils.dart';
