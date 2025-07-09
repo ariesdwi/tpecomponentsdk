@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:tpe_component_sdk/utils/color_utils.dart';
 import 'package:tpe_component_sdk/utils/number_formater.dart';
@@ -10,15 +11,24 @@ class TpeTwCardSection extends StatefulWidget {
   final String accountNumber;
   final String balance;
   final String currency;
+  final VoidCallback? onTap;
+  final String? copyImage;
   final String? copyText;
+  final String? seeAllText;
   final String? titleBalanceText;
   final String? successCopyMessage;
   final String? errorCopyMessage;
+  final String? errorMessage;
   final bool showCopy;
   final bool showError;
-  final Color backgroundCardSeeAll;
-  final String? errorMessage;
+  final Color? backgroundCardSeeAll;
   final bool isLoading;
+  final TextStyle? accountNumberTextStyle;
+  final TextStyle? balanceTextStyle;
+  final TextStyle? titleBalanceTextStyle;
+  final TextStyle? currencyTextStyle;
+  final TextStyle? copyTextStyle;
+  final TextStyle? seeAllTextStyle;
 
   const TpeTwCardSection({
     super.key,
@@ -26,14 +36,23 @@ class TpeTwCardSection extends StatefulWidget {
     required this.balance,
     required this.currency,
     required this.backgroundCardSeeAll,
-    this.titleBalanceText = "",
-    this.copyText = "",
-    this.successCopyMessage = "",
+    required this.onTap,
+    this.titleBalanceText,
+    this.copyImage = 'assets/svg/copy.svg',
+    this.copyText,
+    this.seeAllText,
+    this.successCopyMessage,
     this.errorCopyMessage = "",
     this.showCopy = false,
     this.showError = false,
     this.errorMessage,
     this.isLoading = false,
+    this.accountNumberTextStyle,
+    this.balanceTextStyle,
+    this.titleBalanceTextStyle,
+    this.currencyTextStyle,
+    this.copyTextStyle,
+    this.seeAllTextStyle,
   });
 
   @override
@@ -42,7 +61,7 @@ class TpeTwCardSection extends StatefulWidget {
 
 class _BalanceCardWidgetState extends State<TpeTwCardSection> {
   bool visible = false;
-  var eyeIcon = Icons.visibility_off;
+  var eyeIcon = Icons.visibility;
 
   void showhide() {
     setState(() {
@@ -58,10 +77,7 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // mainAxisSize: MainAxisSize.min,
-      // width: double.maxFinite,
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -70,11 +86,13 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
             children: [
               Text(
                 formatAccountNumber(widget.accountNumber),
-                style: TextStyle(
-                  fontSize: 14, // tanpa .spMin
-                  fontWeight: FontWeight.w600,
-                  color: TPEColors.blue80,
-                ),
+                style:
+                    widget.accountNumberTextStyle ??
+                    TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: TPEColors.blue80,
+                    ),
               ),
               if (widget.showCopy)
                 GestureDetector(
@@ -95,14 +113,20 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
                     children: [
                       Text(
                         widget.copyText ?? "",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: TPEColors.blue80,
-                        ),
+                        style:
+                            widget.copyTextStyle ??
+                            TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: TPEColors.blue80,
+                            ),
                       ),
                       8.width,
-                      Icon(Icons.copy, color: TPEColors.blue80, size: 16),
+                      SvgPicture.asset(
+                        widget.copyImage ?? 'assets/svg/copy.svg',
+                        width: 20,
+                        package: 'tpe_component_sdk',
+                      ),
                     ],
                   ),
                 ),
@@ -132,11 +156,13 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
                   children: [
                     Text(
                       widget.currency,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: TPEColors.blue80,
-                      ),
+                      style:
+                          widget.currencyTextStyle ??
+                          TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: TPEColors.blue80,
+                          ),
                     ),
                     8.width,
                     if (visible)
@@ -144,12 +170,14 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
                         children: [
                           Text(
                             widget.balance,
-                            style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              color: TPEColors.blue80,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style:
+                                widget.balanceTextStyle ??
+                                TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  color: TPEColors.blue80,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                           8.width,
                         ],
@@ -158,12 +186,14 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
                       widget.isLoading == true
                           ? Text(
                               widget.balance,
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                color: TPEColors.blue80,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style:
+                                  widget.balanceTextStyle ??
+                                  TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    color: TPEColors.blue80,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             )
                           : Row(
                               children: List.generate(5, (index) {
@@ -191,11 +221,13 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
                   ],
                 ),
           Card(
+            elevation: 0,
+            margin: EdgeInsets.only(top: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
             child: InkWell(
-              // onTap: onTap,
+              onTap: widget.onTap,
               borderRadius: BorderRadius.circular(12),
               child: Container(
                 padding: const EdgeInsets.symmetric(
@@ -203,21 +235,23 @@ class _BalanceCardWidgetState extends State<TpeTwCardSection> {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: widget.backgroundCardSeeAll.withOpacity(0.8),
+                  color: widget.backgroundCardSeeAll?.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
-                      'Lihat Semua Rekeningmu',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: TPEColors.ligth80,
-                      ),
+                      widget.seeAllText ?? "Lihat Semua Rekeningmu",
+                      style:
+                          widget.seeAllTextStyle ??
+                          TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: TPEColors.ligth80,
+                          ),
                     ),
-                    Icon(Icons.arrow_forward, color: Colors.blue),
+                    Icon(Icons.arrow_forward, color: TPEColors.blue80),
                   ],
                 ),
               ),

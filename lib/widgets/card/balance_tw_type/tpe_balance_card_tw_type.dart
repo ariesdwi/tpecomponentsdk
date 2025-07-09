@@ -1,76 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:tpe_component_sdk/widgets/card/balance_tw_type/tpe_tw_card_section.dart';
-import 'package:tpe_component_sdk/widgets/card/model/tpe_balance_card_data.dart';
+import 'package:tpe_component_sdk/widgets/card/model/tpe_balance_card_tw_style.dart';
 
 class TpeBalanceCardTwType extends StatelessWidget {
-  final TpeBalanceCardData data;
-
-  // UI appearance parameters
-  final Color backgroundColor;
-  final Color? shadowColor;
-  final String backgroundCard;
-  final double backgroundImageOpacity;
-  final EdgeInsets paddingContainer;
-  final EdgeInsets marginContainer;
-  final BorderRadius borderRadius;
-
-  // Shadow parameters
-  final double shadowBlurRadius;
-  final double shadowSpreadRadius;
-  final Offset shadowOffset;
-
-  final bool showBackgroundCard;
+  final String accountNumber;
+  final String currency;
+  final double currentBalance;
+  final VoidCallback? seeAllCallback;
+  final bool isLoading;
+  final bool showCopy;
+  final String? copyImage;
+  final String? copyTitleText;
+  final String? titleBalanceText;
+  final String? seeAllText;
+  final String? copySuccessMessage;
+  final String? copyErrorMessage;
+  final TextStyle? textAccountNumberStyle;
+  final TextStyle? textCopyStyle;
+  final TextStyle? textTitleBalanceStyle;
+  final TextStyle? textCurrentBalanceStyle;
+  final TextStyle? textCurrencyStyle;
+  final TextStyle? textSeeAllStyle;
+  final TpeBalanceTwCardStyle style;
 
   const TpeBalanceCardTwType({
     super.key,
-    required this.data,
-    required this.backgroundColor,
-    this.backgroundCard = 'assets/images/Taiwan_card_image_2.png',
-    this.shadowColor,
-    this.backgroundImageOpacity = 0.4,
-    this.paddingContainer = const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-    this.marginContainer = const EdgeInsets.all(16),
-    this.borderRadius = const BorderRadius.all(Radius.circular(16)),
-    this.shadowBlurRadius = 20,
-    this.shadowSpreadRadius = 0,
-    this.shadowOffset = const Offset(0, 8),
-    this.showBackgroundCard = true
+    required this.accountNumber,
+    required this.currency,
+    required this.currentBalance,
+    this.seeAllCallback,
+    this.showCopy = false,
+    this.copyImage,
+    this.copyTitleText = "Salin",
+    this.titleBalanceText = "Saldo Rekening Utama",
+    this.seeAllText,
+    this.copyErrorMessage,
+    this.isLoading = false,
+    this.copySuccessMessage,
+    this.textAccountNumberStyle,
+    this.textCopyStyle,
+    this.textTitleBalanceStyle,
+    this.textCurrencyStyle,
+    this.textCurrentBalanceStyle,
+    this.textSeeAllStyle,
+    this.style = const TpeBalanceTwCardStyle(),
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: marginContainer,
-      padding: paddingContainer,
+      margin: style.marginContainer,
+      padding: style.paddingContainer,
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: borderRadius,
-        image: showBackgroundCard ? DecorationImage(
-          image: AssetImage(backgroundCard),
-          fit: BoxFit.cover,
-          opacity: backgroundImageOpacity,
-        ) : null,
+        color: style.backgroundColor,
+        borderRadius: style.borderRadius,
+        image: style.showBackgroundCard
+            ? DecorationImage(
+                image: AssetImage(
+                  style.backgroundCard,
+                  package: "tpe_component_sdk",
+                ),
+                fit: BoxFit.cover,
+                opacity: style.backgroundImageOpacity,
+              )
+            : null,
         boxShadow: [
           BoxShadow(
-            color: (shadowColor ?? Colors.black).withAlpha(25),
-            blurRadius: shadowBlurRadius,
-            spreadRadius: shadowSpreadRadius,
-            offset: shadowOffset,
+            color: (style.shadowColor ?? Colors.black).withAlpha(25),
+            blurRadius: style.shadowBlurRadius,
+            spreadRadius: style.shadowSpreadRadius,
+            offset: style.shadowOffset,
           ),
         ],
       ),
       child: TpeTwCardSection(
-        accountNumber: data.accountNumber,
-        balance: data.currentBalance.toString(),
-        currency: data.currency,
-        showCopy: data.showCopy,
-        titleBalanceText: data.titleBalanceText,
-        copyText: data.copyTitleText,
-        isLoading: data.isLoading,
-        successCopyMessage: data.copySuccessMessage,
-        backgroundCardSeeAll: backgroundColor,
+        accountNumber: accountNumber,
+        balance: currentBalance.toString(),
+        currency: currency,
+        onTap: seeAllCallback,
+        seeAllText: seeAllText,
+        showCopy: showCopy,
+        titleBalanceText: titleBalanceText,
+        copyText: copyTitleText,
+        isLoading: isLoading,
+        copyImage: copyImage,
+        successCopyMessage: copySuccessMessage,
+        copyTextStyle: textCopyStyle,
+        backgroundCardSeeAll: style.backgroundColor,
+        accountNumberTextStyle: textAccountNumberStyle,
+        titleBalanceTextStyle: textTitleBalanceStyle,
+        balanceTextStyle: textCurrentBalanceStyle,
+        currencyTextStyle: textCurrencyStyle,
+        seeAllTextStyle: textSeeAllStyle,
       ),
     );
   }
 }
-

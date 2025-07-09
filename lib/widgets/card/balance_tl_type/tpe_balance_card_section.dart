@@ -1,32 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:tpe_component_sdk/utils/color_utils.dart';
-import 'package:tpe_component_sdk/widgets/card/model/tpe_balance_card_data.dart';
 
 class BalanceSectionTLTypeCard extends StatelessWidget {
-  final TpeBalanceCardData data;
-  final bool balanceVisible;
+  final double currentBalance;
+  final String currency;
+  final String? currentBalanceTitle;
+  final bool? isLoading;
+  final bool? balanceVisible;
   final VoidCallback? onToggleVisibility;
-  final EdgeInsets padding;
-  final BorderRadius borderRadius;
-  final Color backgroundColor;
-  final Color textColor;
-  final Color secondaryTextColor;
+  final EdgeInsets? paddingBalanceCardTLSection;
+  final BorderRadius? borderRadiusBalanceCardTLSection;
+  final Color? backgroundColorBalanceCardTLSection;
+  final Color? textColor;
+  final Color? secondaryTextColor;
   final Animation<double> fadeAnimation;
   final String? Function(double)? balanceFormatter;
+  final TextStyle? currentBalanceTitleStyle;
 
   const BalanceSectionTLTypeCard({
     super.key,
-    required this.data,
-    required this.balanceVisible,
-    required this.onToggleVisibility,
-    required this.padding,
-    required this.borderRadius,
-    required this.backgroundColor,
-    required this.textColor,
-    required this.secondaryTextColor,
-    required this.fadeAnimation,
-    required this.balanceFormatter,
+    required this.currentBalance,
+    required this.currency,
+    this.currentBalanceTitle,
+    this.isLoading,
+    this.balanceVisible,
+    this.onToggleVisibility,
+    this.paddingBalanceCardTLSection,
+    this.borderRadiusBalanceCardTLSection,
+     this.backgroundColorBalanceCardTLSection,
+     this.textColor,
+     this.secondaryTextColor,
+     required this.fadeAnimation,
+     this.balanceFormatter,
+     this.currentBalanceTitleStyle,
   });
 
   @override
@@ -34,41 +41,43 @@ class BalanceSectionTLTypeCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: padding,
+      padding: paddingBalanceCardTLSection,
       width: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: borderRadius.copyWith(
+        borderRadius: borderRadiusBalanceCardTLSection?.copyWith(
           topLeft: Radius.zero,
           topRight: Radius.zero,
         ),
-        color: backgroundColor,
+        color: backgroundColorBalanceCardTLSection,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Account Balance',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: secondaryTextColor,
-            ),
+            currentBalanceTitle ?? 'Account Balance',
+            style:
+                currentBalanceTitleStyle ??
+                theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: secondaryTextColor,
+                ),
           ),
           const SizedBox(height: 4),
           Row(
             children: [
               Skeletonizer(
-                enabled: data.isLoading,
+                enabled: isLoading ?? false,
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 250),
-                  child: balanceVisible
+                  child: balanceVisible ?? true
                       ? FadeTransition(
                           opacity: fadeAnimation,
                           key: const ValueKey(1),
                           child: Text(
-                            data.isLoading
+                            isLoading ?? false
                                 ? 'USD 000000.00'
-                                : balanceFormatter?.call(data.currentBalance) ??
-                                    "${data.currency} ${data.currentBalance.toStringAsFixed(2)}",
+                                : balanceFormatter?.call(currentBalance) ??
+                                      "${currency} ${currentBalance.toStringAsFixed(2)}",
                             style: theme.textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: textColor,
@@ -91,7 +100,7 @@ class BalanceSectionTLTypeCard extends StatelessWidget {
                 IconButton(
                   onPressed: onToggleVisibility,
                   icon: Icon(
-                    balanceVisible ? Icons.visibility_off : Icons.visibility,
+                    balanceVisible ?? true ? Icons.visibility_off : Icons.visibility,
                     color: textColor,
                   ),
                 ),
